@@ -2,16 +2,14 @@ const songSchoolyardsPuppy = {
     id: 2,
     title: "Schoolyards Puppy (Koutei no Koinu)",
     cover: "images/cara-meminum-ramune.jpg", 
-    src: "song/schoolyards-puppy.mp3",
+    src: "song/Schoolyards-Puppy.mp3",
     lyrics: [
-        // --- CHORUS DI AWAL ---
         { time: 1, text: "Di pojok halaman sekolah", isChant: false },
         { time: 5, text: "Ada seekor anak anjing", isChant: false },
         { time: 9, text: "Yang mendongak ke arah kelas", isChant: false },
         { time: 14, text: "Seperti mencari seseorang", isChant: false },
         { time: 17, text: "Sore hari yang tenang", isChant: false },
 
-        // --- VERSE 1 ---
         { time: 45, text: "Waktu kelas ini sedang berlangsung", isChant: false },
         { time: 49, text: "Tiba-tiba aku memikirkan dirimu", isChant: false },
         { time: 53, text: "Pensilku mulai menggambar sketsa", isChant: false },
@@ -20,14 +18,12 @@ const songSchoolyardsPuppy = {
         { time: 65, text: "Padahal dia cowok dari kelas lain", isChant: false },
         { time: 70, text: "Saat berpapasan dengan dia", isChant: false },
         { time: 74, text: "Dada jadi berdebar", isChant: false },
-
-        // --- PRE-CHORUS 1 ---
+        
         { time: 79, text: "Langit biru yang di luar jendela", isChant: false },
         { time: 82, text: "Aku tatap sambil menyipitkan mata", isChant: false },
         { time: 87, text: "Memikirkan dirimu membuat hatiku", isChant: false },
         { time: 91, text: "Ini menjadi bingung", isChant: false },
 
-        // --- CHORUS 1 ---
         { time: 95, text: "Di pojok halaman sekolah", isChant: false },
         { time: 99, text: "Ada seekor anak anjing", isChant: false },
         { time: 103, text: "Yang mendongak ke arah kelas", isChant: false },
@@ -37,7 +33,6 @@ const songSchoolyardsPuppy = {
         { time: 120, text: "Cinta itu datang entah dari mananya", isChant: false },
         { time: 126, text: "Lalu berkeliaran tanpa arah", isChant: false },
 
-        // --- VERSE 2 ---
         { time: 137, text: "Saat aku ditunjuk oleh guru", isChant: false },
         { time: 141, text: "Jadi terbata-bata tidak bisa menjawab", isChant: false },
         { time: 145, text: "'Oh unbelievable!', dia tak percaya", isChant: false },
@@ -47,13 +42,11 @@ const songSchoolyardsPuppy = {
         { time: 164, text: "Dari denyutan di lubuk hatiku", isChant: false },
         { time: 168, text: "Yang membuat terheran-heran", isChant: false },
 
-        // --- PRE-CHORUS 2  ---
         { time: 173, text: "Murid saat pelajaran olahraga", isChant: false },
         { time: 177, text: "Terlihat tidak peduli apa-apa", isChant: false },
         { time: 181, text: "Bahkan si pendatang kecil", isChant: false },
         { time: 185, text: "Mereka tidak memanggilnya", isChant: false },
 
-        // --- CHORUS 2  ---
         { time: 189, text: "Andaikan ku bisa bergegas", isChant: false },
         { time: 193, text: "Dengan tangan ini mendekap", isChant: false },
         { time: 197, text: "Kepalaku akan dielus", isChant: false },
@@ -63,7 +56,6 @@ const songSchoolyardsPuppy = {
         { time: 214, text: "Saat aku bahkan tidak menyadarinya", isChant: false },
         { time: 218, text: "Aku datang 'tuk bertemu denganmu", isChant: false },
 
-        // --- OUTRO CHORUS ---
         { time: 239, text: "Di pojok halaman sekolah", isChant: false },
         { time: 243, text: "Ada seekor anak anjing", isChant: false },
         { time: 248, text: "Yang mendongak ke arah kelas", isChant: false },

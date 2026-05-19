@@ -2,7 +2,7 @@ const songPertanda = {
     id: 1,
     title: "Pertanda (Kizashi)",
     cover: "images/cara-meminum-ramune.jpg", 
-    src: "song/pertanda.mp3",
+    src: "song/Pertanda.mp3",
     lyrics: [
         { time: 30, text: "Sekarang kita sedang berkumpul di atas atap bangunan sekolah", isChant: false },
         { time: 37, text: "Bersama-sama menunggu terbitnya sang fajar, lalu", isChant: false },

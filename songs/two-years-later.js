@@ -87,7 +87,6 @@ const songTwoYearsLater = {
         { time: 28, text: "Besok (di sini) Ayo (bertemu)", isChant: false },
         { time: 31, text: "E-mail (sebaris) Yang datang (mendadak)", isChant: false },
 
-        // --- VERSE 2 ---
         { time: 34, text: "Kaca mozaik itu sangat nostaljik", isChant: false },
         {
             time: 40,
@@ -103,12 +102,10 @@ const songTwoYearsLater = {
         { time: 53, text: "Sedih (nan manis) Tinggalkan (duri)", isChant: false },
         { time: 57, text: "Penanda dari kenangan", isChant: false },
 
-        // --- PRE-CHORUS 1 ---
         { time: 61, text: "Kenapa... dua tahun berlalu...", isChant: false },
         { time: 67, text: "Kenapa... membuatku berbalik...", isChant: false },
         { time: 72, text: "Beri tahu...", isChant: false },
 
-        // --- CHORUS 1 ---
         { time: 76, text: "Maafkanlah Tuhan, ampunilah diriku ini", isChant: false },
         { time: 80, text: "Yang tidak percaya 'kan cinta", isChant: false },
         { time: 83, text: "Aku adalah wanita yang jahat, ahhh...", isChant: false },
@@ -181,7 +178,6 @@ const songTwoYearsLater = {
             chant: "kasen tobi jokyo"
         },
 
-        // --- VERSE 3 ---
         {
             time: 116,
             text: "Baiknya bertemu dengan muka apa?",
@@ -196,7 +192,6 @@ const songTwoYearsLater = {
         { time: 131, text: "Mungkinku (memakai) Bohong yang (pandai)", isChant: false },
         { time: 135, text: "Ku bingung menulis e-mail balasan", isChant: false },
 
-        // --- VERSE 4 ---
         {
             time: 139,
             text: "Di sisi ujung bangku panjang itu",
@@ -211,18 +206,15 @@ const songTwoYearsLater = {
         { time: 154, text: "Dirimu (selalu) Ego tak (terucap)", isChant: false },
         { time: 157, text: "Waktu itu sangat kejam", isChant: false },
 
-        // --- PRE-CHORUS 2 ---
         { time: 163, text: "Hai... kenapa manusia...", isChant: false },
         { time: 168, text: "Hai... sadari kesalahan... yang dibuat...", isChant: false },
 
-        // --- CHORUS 2 ---
         { time: 174, text: "Maafkanlah Tuhan, diriku yang terlalu bodoh", isChant: false },
         { time: 180, text: "Tak bisa menepati janji", isChant: false },
         { time: 183, text: "Kau adalah orang yang baik dahulu, ahhh...", isChant: false },
         { time: 188, text: "Tapi pada jari manisku ada seseorang yang baru", isChant: false },
         { time: 194, text: "Sudah, tak bisa kembali ke masa itu, ahhh...", isChant: false },
 
-        // --- CHORUS 3 / FINAL CHORUS ---
         { time: 210.5, text: "Maafkanlah Tuhan, ampunilah diriku ini", isChant: false },
         { time: 214, text: "Yang tidak percaya 'kan cinta", isChant: false },
         { time: 217, text: "Aku adalah wanita yang jahat, ahhh...", isChant: false },

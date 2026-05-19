@@ -13,6 +13,7 @@ function getJkt48Setlists() {
         "seishun": {
             name: "Pajama Drive (Pajama Doraibu)",
             playlist: [
+                typeof songPrinsipKesucianHati !== 'undefined' ? songPrinsipKesucianHati : { title: "Error: Prinsip Kesucian Hati Belum Dimuat", lyrics: [] },
                 typeof songTwoYearsLater !== 'undefined' ? songTwoYearsLater : { title: "Error: Two Years Later Belum Dimuat", lyrics: [] }
             ]
         }

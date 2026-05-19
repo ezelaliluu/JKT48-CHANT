@@ -119,7 +119,12 @@ function syncTrackData(index) {
     
     currentTrackTag.innerText = track.title.toUpperCase();
     trackCounter.innerText = `${activeIndex + 1} / ${currentPlaylist.length}`;
-    audioPlayer.src = track.src;
+    
+    // FIX VERCEL 0:00: Di server online, audio harus dipaksa reload biar durasinya kebaca
+    if (audioPlayer.src !== track.src) {
+        audioPlayer.src = track.src;
+        audioPlayer.load(); 
+    }
     resetProgressBar();
 
     lyricsContainer.innerHTML = track.lyrics.map((line, idx) => `
@@ -127,7 +132,7 @@ function syncTrackData(index) {
              onclick="seekToLyric(${line.time})" 
              class="transition-all duration-500 transform origin-left cursor-pointer hover:opacity-80 space-y-1">
             
-            <p id="text-target-${idx}" class="font-bold tracking-tight text-xl md:text-2xl text-gray-900 opacity-20 transition-opacity duration-500">${line.text}</p>
+            <p id="text-target-${idx}" class="font-bold tracking-tight text-xl md:text-2xl text-gray-900 opacity-20 transition-opacity duration-500 ${!line.text ? 'hidden' : ''}">${line.text}</p>
             
             ${line.chant ? `
                 <p id="chant-target-${idx}" class="font-extrabold tracking-tight text-lg md:text-xl text-[#e60012] italic mt-1 opacity-20 transition-opacity duration-500">
@@ -175,18 +180,18 @@ audioPlayer.addEventListener('timeupdate', () => {
         const textElement = document.getElementById(`text-target-${idx}`);
         const chantElement = document.getElementById(`chant-target-${idx}`);
         
-        if (!container || !textElement) return;
+        if (!container) return;
         
         const isCurrent = currentTime >= line.time && (idx === currentLyrics.length - 1 || currentTime < currentLyrics[idx + 1].time);
         
         if (isCurrent) {
-            textElement.classList.replace('opacity-20', 'opacity-100');
+            if (textElement) textElement.classList.replace('opacity-20', 'opacity-100');
             if (chantElement) chantElement.classList.replace('opacity-20', 'opacity-100');
             
             container.scrollIntoView({ behavior: 'smooth', block: 'center' });
         } else {
-            textElement.classList.replace('opacity-100', 'opacity-20');
-            if (chantElement) chantElement.classList.replace('opacity-100', 'opacity-20');
+            if (textElement) textElement.classList.replace('opacity-100', 'opacity-20');
+            if (chantElement) textElement.classList.replace('opacity-100', 'opacity-20');
         }
     });
 });
