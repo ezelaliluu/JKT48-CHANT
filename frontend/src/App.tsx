@@ -299,12 +299,55 @@ function Hero({ onExplore }: { onExplore: (section: NavItem) => void }) {
 // ─── Section: Kalender ────────────────────────────────────────────────────────
 
 function KalenderSection() {
-  const [filter, setFilter] = useState<'Semua' | Event['type']>('Semua')
-  const filters: Array<'Semua' | Event['type']> = ['Semua', 'Teater', '2-Shot', 'Ulang Tahun', 'Konser']
+  const [filter, setFilter] = useState('Semua');
+
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const filters = ['Semua', 'Teater', '2-Shot', 'Ulang Tahun', 'Konser'];
+
+  
+
+  useEffect(() => {
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    fetch(`${apiUrl}/api/jadwal`)
+      .then(response => response.json())
+      .then(result => {
+        setEvents(result.data); 
+        setLoading(false);
+      })  
+      .catch(error => {
+        console.error("Gagal nge-fetch jadwal:", error);
+        setLoading(false);
+      });
+  }, []);
 
   const filtered = filter === 'Semua' ? events : events.filter(e => e.type === filter)
 
+  if (loading) {
+    return (
+      <section className="max-w-7xl mx-auto px-6 py-16 text-center">
+        <p className="text-black dark:text-white">Memuat jadwal dari teater...</p>
+      </section>
+    );
+  }
+
+  const typeColor: Record<string, string> = {
+    "Exclusive": "bg-[#E8001A] text-white", 
+    "Teater": "bg-[#E8001A] text-white", 
+    "General": "bg-gray-700 text-white", 
+    "Team Passion": "bg-orange-500 text-white", 
+    "Team Dream": "bg-blue-500 text-white",
+    "Trainee": "bg-green-500 text-white",
+    "Team Love": "bg-pink-500 text-white",
+    "2-Shot": "bg-purple-600 text-white",
+    "Ulang Tahun": "bg-amber-500 text-white",
+    "Konser": "bg-blue-600 text-white"
+  };
+
   return (
+
+  
     <section id="kalender" className="max-w-7xl mx-auto px-6 py-16">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div>
@@ -331,6 +374,8 @@ function KalenderSection() {
         </div>
       </div>
 
+      
+
       {/* Filters */}
       <div className="flex gap-0 mb-8 border border-[#e5e5e5] dark:border-[#262626] w-fit">
         {filters.map(f => (
@@ -356,7 +401,7 @@ function KalenderSection() {
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2 mb-1">
-                <span className={`text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 ${typeColor[e.type]}`}>
+                <span className={`text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 ${typeColor[e.type] || "bg-gray-200 text-gray-800"}`}>
                   {e.type}
                 </span>
                 <span className="text-xs text-[#737373]">{e.time}</span>
