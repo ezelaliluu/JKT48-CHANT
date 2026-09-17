@@ -3,7 +3,7 @@ import heroBg from './imports/JKT48-15.webp'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-type NavItem = 'Kalender' | 'Statistik' | 'Tiket' | 'Chant' 
+type NavItem = 'Kalender' | 'Statistik' | 'Tiket' | 'Chant'
 
 interface Event {
   date: string
@@ -99,9 +99,8 @@ function ThemeToggle({ darkMode, toggleDarkMode }: { darkMode: boolean; toggleDa
       className="relative inline-flex h-8 w-14 flex-shrink-0 cursor-pointer items-center border border-black dark:border-white bg-white dark:bg-black p-[3px] transition-colors duration-200 focus:outline-none"
     >
       <span
-        className={`pointer-events-none h-full w-6 bg-black dark:bg-white flex items-center justify-center transition-transform duration-200 ${
-          darkMode ? 'translate-x-[26px]' : 'translate-x-0'
-        }`}
+        className={`pointer-events-none h-full w-6 bg-black dark:bg-white flex items-center justify-center transition-transform duration-200 ${darkMode ? 'translate-x-[26px]' : 'translate-x-0'
+          }`}
       >
         {darkMode ? (
           <svg className="w-3.5 h-3.5 text-black fill-current" viewBox="0 0 20 20">
@@ -146,11 +145,10 @@ function Nav({
             <button
               key={item}
               onClick={() => setActive(item)}
-              className={`text-sm font-medium transition-colors ${
-                active === item
-                  ? 'text-[#E8001A]'
-                  : 'text-black dark:text-[#e5e5e5] hover:text-[#E8001A] dark:hover:text-[#E8001A]'
-              }`}
+              className={`text-sm font-medium transition-colors ${active === item
+                ? 'text-[#E8001A]'
+                : 'text-black dark:text-[#e5e5e5] hover:text-[#E8001A] dark:hover:text-[#E8001A]'
+                }`}
             >
               {item}
             </button>
@@ -173,19 +171,16 @@ function Nav({
             aria-label="Menu"
           >
             <span
-              className={`w-5 h-px bg-black dark:bg-white transition-all ${
-                mobileOpen ? 'rotate-45 translate-y-[5px]' : ''
-              }`}
+              className={`w-5 h-px bg-black dark:bg-white transition-all ${mobileOpen ? 'rotate-45 translate-y-[5px]' : ''
+                }`}
             />
             <span
-              className={`w-5 h-px bg-black dark:bg-white transition-all ${
-                mobileOpen ? 'opacity-0' : ''
-              }`}
+              className={`w-5 h-px bg-black dark:bg-white transition-all ${mobileOpen ? 'opacity-0' : ''
+                }`}
             />
             <span
-              className={`w-5 h-px bg-black dark:bg-white transition-all ${
-                mobileOpen ? '-rotate-45 -translate-y-[5px]' : ''
-              }`}
+              className={`w-5 h-px bg-black dark:bg-white transition-all ${mobileOpen ? '-rotate-45 -translate-y-[5px]' : ''
+                }`}
             />
           </button>
         </div>
@@ -201,9 +196,8 @@ function Nav({
                 setActive(item);
                 setMobileOpen(false);
               }}
-              className={`w-full text-left px-6 py-3 text-sm border-b border-[#f0f0f0] dark:border-[#1c1c1c] ${
-                active === item ? 'text-[#E8001A] font-medium' : 'text-black dark:text-[#e5e5e5]'
-              }`}
+              className={`w-full text-left px-6 py-3 text-sm border-b border-[#f0f0f0] dark:border-[#1c1c1c] ${active === item ? 'text-[#E8001A] font-medium' : 'text-black dark:text-[#e5e5e5]'
+                }`}
             >
               {item}
             </button>
@@ -285,7 +279,7 @@ function KalenderSection() {
   const [periodeText, setPeriodeText] = useState('Memuat...');
   const [loading, setLoading] = useState(true);
   const filters = ['Semua', 'Teater', '2-Shot', 'Ulang Tahun', 'Konser'];
-  
+
 
   useEffect(() => {
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -320,10 +314,10 @@ function KalenderSection() {
   const filtered = filter === 'Semua'
     ? events
     : events.filter(e => {
-        if (filter === 'Teater') return isTeater(e.type);
-        if (filter === 'Konser') return isKonser(e.type);
-        return (e.type || '').toLowerCase().includes(filter.toLowerCase());
-      });
+      if (filter === 'Teater') return isTeater(e.type);
+      if (filter === 'Konser') return isKonser(e.type);
+      return (e.type || '').toLowerCase().includes(filter.toLowerCase());
+    });
 
   const typeColor: Record<string, string> = {
     'Exclusive': 'bg-[#E8001A] text-white',
@@ -348,17 +342,17 @@ function KalenderSection() {
         <div className="flex flex-wrap gap-2">
           <button className="flex items-center gap-2 border border-black dark:border-[#333333] text-black dark:text-[#e5e5e5] px-4 py-2 text-xs font-medium hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
             </svg>
             Google Calendar
           </button>
           <button className="flex items-center gap-2 border border-black dark:border-[#333333] text-black dark:text-[#e5e5e5] px-4 py-2 text-xs font-medium hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
             </svg>
             Apple Calendar
           </button>
@@ -371,9 +365,8 @@ function KalenderSection() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-4 py-2 text-xs font-medium transition-colors border-r border-[#e5e5e5] dark:border-[#262626] last:border-r-0 ${
-              filter === f ? 'bg-[#E8001A] text-white' : 'bg-white dark:bg-[#121212] text-black dark:text-[#d4d4d4] hover:bg-[#f5f5f5] dark:hover:bg-[#1f1f1f]'
-            }`}
+            className={`px-4 py-2 text-xs font-medium transition-colors border-r border-[#e5e5e5] dark:border-[#262626] last:border-r-0 ${filter === f ? 'bg-[#E8001A] text-white' : 'bg-white dark:bg-[#121212] text-black dark:text-[#d4d4d4] hover:bg-[#f5f5f5] dark:hover:bg-[#1f1f1f]'
+              }`}
           >
             {f}
           </button>
@@ -410,7 +403,7 @@ function KalenderSection() {
               <button className="hidden group-hover:flex items-center gap-1 text-xs text-[#E8001A] font-medium flex-shrink-0">
                 + Tambah
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                  <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </button>
             </div>
@@ -433,7 +426,7 @@ function StatistikSection() {
   const [members, setMembers] = useState<Member[]>([]);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [periodeText, setPeriodeText] = useState('Memuat...');
-  
+
   useEffect(() => {
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
     fetch(`${apiUrl}/api/jadwal`)
@@ -450,15 +443,21 @@ function StatistikSection() {
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/members')
-      .then((res) => res.json())
-      .then((result) => {
-        setMembers(result.data);
-        if (result.data && result.data.length > 0) {
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    fetch(`${apiUrl}/api/members`)
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP status ${response.status}`);
+        return response.json();
+      })
+      .then(result => {
+        if (result && result.data && result.data.length > 0) {
+          setMembers(result.data);
           setSelectedMember(result.data[0]);
         }
       })
-      .catch((err) => console.error("Gagal load member:", err));
+      .catch(error => {
+        console.error('Gagal nge-fetch members:', error);
+      });
   }, []);
 
   return (
@@ -478,9 +477,8 @@ function StatistikSection() {
             <button
               key={m.name}
               onClick={() => setSelectedMember(m)}
-              className={`w-full text-left px-5 py-4 border-b border-[#f0f0f0] dark:border-[#1c1c1c] last:border-b-0 transition-colors ${
-                selectedMember?.name === m.name ? 'bg-[#E8001A] text-white' : 'hover:bg-[#f5f5f5] dark:hover:bg-[#1a1a1a]'
-              }`}
+              className={`w-full text-left px-5 py-4 border-b border-[#f0f0f0] dark:border-[#1c1c1c] last:border-b-0 transition-colors ${selectedMember?.name === m.name ? 'bg-[#E8001A] text-white' : 'hover:bg-[#f5f5f5] dark:hover:bg-[#1a1a1a]'
+                }`}
             >
               <p className={`text-sm font-medium ${selectedMember?.name === m.name ? 'text-white' : 'text-black dark:text-white'}`}>{m.name}</p>
               <p className={`text-xs mt-0.5 ${selectedMember?.name === m.name ? 'text-red-200' : 'text-[#737373] dark:text-[#888888]'}`}>{m.team}</p>
@@ -592,9 +590,8 @@ function TiketSection() {
                       key={m}
                       type="button"
                       onClick={() => setMethod(m)}
-                      className={`flex-1 py-2.5 text-xs font-medium transition-colors capitalize ${
-                        method === m ? 'bg-[#E8001A] text-white' : 'bg-white dark:bg-[#161616] text-black dark:text-[#d4d4d4] hover:bg-[#f5f5f5] dark:hover:bg-[#222222]'
-                      }`}
+                      className={`flex-1 py-2.5 text-xs font-medium transition-colors capitalize ${method === m ? 'bg-[#E8001A] text-white' : 'bg-white dark:bg-[#161616] text-black dark:text-[#d4d4d4] hover:bg-[#f5f5f5] dark:hover:bg-[#222222]'
+                        }`}
                     >
                       {m === 'whatsapp' ? 'WhatsApp' : 'Email'}
                     </button>
@@ -648,9 +645,8 @@ function TiketSection() {
             {upcoming.map((t, i) => (
               <div key={i} className="flex items-start gap-4 p-4 border-b border-[#f0f0f0] dark:border-[#1c1c1c] last:border-b-0">
                 <div
-                  className={`w-2 h-2 mt-1.5 flex-shrink-0 ${
-                    t.status === 'open' ? 'bg-[#E8001A]' : 'bg-[#e5e5e5] dark:bg-[#333333]'
-                  }`}
+                  className={`w-2 h-2 mt-1.5 flex-shrink-0 ${t.status === 'open' ? 'bg-[#E8001A]' : 'bg-[#e5e5e5] dark:bg-[#333333]'
+                    }`}
                 />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-black dark:text-white">{t.show}</p>
@@ -660,11 +656,10 @@ function TiketSection() {
                   </p>
                 </div>
                 <span
-                  className={`text-[10px] font-semibold uppercase px-2 py-0.5 flex-shrink-0 ${
-                    t.status === 'open'
-                      ? 'bg-[#E8001A] text-white'
-                      : 'border border-[#e5e5e5] dark:border-[#333333] text-[#737373] dark:text-[#888888]'
-                  }`}
+                  className={`text-[10px] font-semibold uppercase px-2 py-0.5 flex-shrink-0 ${t.status === 'open'
+                    ? 'bg-[#E8001A] text-white'
+                    : 'border border-[#e5e5e5] dark:border-[#333333] text-[#737373] dark:text-[#888888]'
+                    }`}
                 >
                   {t.status === 'open' ? 'Buka' : 'Segera'}
                 </span>
@@ -715,11 +710,11 @@ function ChantSection() {
             >
               {playing ? (
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
-                  <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+                  <rect x="6" y="4" width="4" height="16" /><rect x="14" y="4" width="4" height="16" />
                 </svg>
               ) : (
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
-                  <polygon points="5,3 19,12 5,21"/>
+                  <polygon points="5,3 19,12 5,21" />
                 </svg>
               )}
             </button>
@@ -753,18 +748,16 @@ function ChantSection() {
             <div
               key={i}
               onClick={() => setActiveLine(i)}
-              className={`flex items-start gap-4 px-6 py-3.5 cursor-pointer transition-colors ${
-                i === activeLine ? 'bg-red-50' : 'hover:bg-[#fafafa] dark:hover:bg-[#161616]'
-              }`}
+              className={`flex items-start gap-4 px-6 py-3.5 cursor-pointer transition-colors ${i === activeLine ? 'bg-red-50' : 'hover:bg-[#fafafa] dark:hover:bg-[#161616]'
+                }`}
             >
               <span className="text-[10px] text-[#737373] w-8 mt-0.5 flex-shrink-0 font-mono">{line.time}</span>
               <p className={`text-sm flex-1 ${i === activeLine ? 'text-[#E8001A] font-semibold' : 'text-black dark:text-[#e5e5e5]'}`}>
                 {line.text}
               </p>
               {line.chant && (
-                <span className={`text-[10px] font-bold tracking-widest flex-shrink-0 ${
-                  i === activeLine ? 'text-[#E8001A]' : 'text-[#737373]'
-                }`}>
+                <span className={`text-[10px] font-bold tracking-widest flex-shrink-0 ${i === activeLine ? 'text-[#E8001A]' : 'text-[#737373]'
+                  }`}>
                   {line.chant}
                 </span>
               )}
