@@ -8,18 +8,18 @@ type NavItem = 'Kalender' | 'Statistik' | 'Tiket' | 'Chant'
 interface Event {
   date: string
   day: string
-  type: 'Teater' | '2-Shot' | 'Ulang Tahun' | 'Konser'
+  type: string
   title: string
   time: string
-  location: string
+  location?: string
 }
 
 interface Member {
   name: string
   team: string
-  appearances: number
-  lastShow: string
-  favoriteSet: string
+  appearances?: number
+  lastShow?: string
+  favoriteSet?: string
 }
 
 interface ChantEntry {
@@ -31,25 +31,6 @@ interface ChantEntry {
 }
 
 // ─── Mock Data ───────────────────────────────────────────────────────────────
-
-const events: Event[] = [
-  { date: '16', day: 'SEL', type: 'Teater', title: 'Setlist Koisuru Fortune Cookie', time: '18:30', location: 'Teater JKT48, FX Sudirman' },
-  { date: '17', day: 'RAB', type: 'Teater', title: 'Setlist Pajama Drive', time: '13:00', location: 'Teater JKT48, FX Sudirman' },
-  { date: '18', day: 'KAM', type: '2-Shot', title: '2-Shot Event — Team KIII', time: '10:00', location: 'JKT48 Cafe, Jakarta Selatan' },
-  { date: '19', day: "JUM", type: 'Ulang Tahun', title: 'HBD Freya Jayawardana', time: 'Sepanjang Hari', location: '—' },
-  { date: '20', day: 'SAB', type: 'Teater', title: 'Setlist Shonichi', time: '13:00', location: 'Teater JKT48, FX Sudirman' },
-  { date: '20', day: 'SAB', type: 'Teater', title: 'Setlist Shonichi', time: '18:30', location: 'Teater JKT48, FX Sudirman' },
-  { date: '21', day: 'MIN', type: 'Konser', title: 'JKT48 Fan Meeting 2026', time: '15:00', location: 'Balai Sarbini, Jakarta' },
-  { date: '25', day: 'KAM', type: 'Teater', title: 'Setlist Beginner', time: '18:30', location: 'Teater JKT48, FX Sudirman' },
-]
-
-const members: Member[] = [
-  { name: 'Freya Jayawardana', team: 'Team J', appearances: 24, lastShow: '14 Sep 2026', favoriteSet: 'Koisuru Fortune Cookie' },
-  { name: 'Shani Indira Natio', team: 'Team KIII', appearances: 21, lastShow: '13 Sep 2026', favoriteSet: 'Pajama Drive' },
-  { name: 'Christy Saura', team: 'Team T', appearances: 19, lastShow: '12 Sep 2026', favoriteSet: 'Shonichi' },
-  { name: 'Muthe Muhadjirin', team: 'Team J', appearances: 18, lastShow: '14 Sep 2026', favoriteSet: 'Koisuru Fortune Cookie' },
-  { name: 'Anindya Ardhana', team: 'Team T', appearances: 17, lastShow: '11 Sep 2026', favoriteSet: 'Beginner' },
-]
 
 const topSongs = [
   { title: 'Koisuru Fortune Cookie', count: 47, percent: 94 },
@@ -300,58 +281,68 @@ function Hero({ onExplore }: { onExplore: (section: NavItem) => void }) {
 
 function KalenderSection() {
   const [filter, setFilter] = useState('Semua');
-
   const [events, setEvents] = useState<Event[]>([]);
+  const [periodeText, setPeriodeText] = useState('Memuat...');
   const [loading, setLoading] = useState(true);
-
   const filters = ['Semua', 'Teater', '2-Shot', 'Ulang Tahun', 'Konser'];
-
   
 
   useEffect(() => {
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
     fetch(`${apiUrl}/api/jadwal`)
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP status ${response.status}`);
+        return response.json();
+      })
       .then(result => {
-        setEvents(result.data); 
+        if (result && Array.isArray(result.data) && result.data.length > 0) {
+          setEvents(result.data);
+        }
+        if (result && result.periode) { setPeriodeText(result.periode); }
         setLoading(false);
-      })  
+      })
       .catch(error => {
-        console.error("Gagal nge-fetch jadwal:", error);
+        console.error('Gagal nge-fetch jadwal:', error);
         setLoading(false);
       });
   }, []);
 
-  const filtered = filter === 'Semua' ? events : events.filter(e => e.type === filter)
+  const isTeater = (t: string) => {
+    const lower = (t || '').toLowerCase();
+    return lower.includes('teater') || lower.includes('team') || lower.includes('trainee') || lower === 'jkt48';
+  };
 
-  if (loading) {
-    return (
-      <section className="max-w-7xl mx-auto px-6 py-16 text-center">
-        <p className="text-black dark:text-white">Memuat jadwal dari teater...</p>
-      </section>
-    );
-  }
+  const isKonser = (t: string) => {
+    const lower = (t || '').toLowerCase();
+    return lower.includes('konser') || lower.includes('general') || lower.includes('fest');
+  };
+
+  const filtered = filter === 'Semua'
+    ? events
+    : events.filter(e => {
+        if (filter === 'Teater') return isTeater(e.type);
+        if (filter === 'Konser') return isKonser(e.type);
+        return (e.type || '').toLowerCase().includes(filter.toLowerCase());
+      });
 
   const typeColor: Record<string, string> = {
-    "Exclusive": "bg-[#E8001A] text-white", 
-    "Teater": "bg-[#E8001A] text-white", 
-    "General": "bg-gray-700 text-white", 
-    "Team Passion": "bg-orange-500 text-white", 
-    "Team Dream": "bg-blue-500 text-white",
-    "Trainee": "bg-green-500 text-white",
-    "Team Love": "bg-pink-500 text-white",
-    "2-Shot": "bg-purple-600 text-white",
-    "Ulang Tahun": "bg-amber-500 text-white",
-    "Konser": "bg-blue-600 text-white"
+    'Exclusive': 'bg-[#E8001A] text-white',
+    'Teater': 'bg-[#E8001A] text-white',
+    'General': 'bg-gray-700 text-white',
+    'Team Passion': 'bg-orange-500 text-white',
+    'Team Dream': 'bg-blue-500 text-white',
+    'Trainee': 'bg-emerald-600 text-white',
+    'Team Love': 'bg-pink-500 text-white',
+    '2-Shot': 'bg-purple-600 text-white',
+    'Ulang Tahun': 'bg-amber-500 text-white',
+    'Konser': 'bg-blue-600 text-white'
   };
 
   return (
-
-  
     <section id="kalender" className="max-w-7xl mx-auto px-6 py-16">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div>
-          <p className="text-xs tracking-[0.3em] uppercase text-[#E8001A] font-medium mb-2">September 2026</p>
+          <p className="text-xs tracking-[0.3em] uppercase text-[#E8001A] font-medium mb-2">{periodeText}</p>
           <h2 className="font-display font-light text-4xl md:text-5xl text-black dark:text-white">Kalender Terintegrasi</h2>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -374,8 +365,6 @@ function KalenderSection() {
         </div>
       </div>
 
-      
-
       {/* Filters */}
       <div className="flex gap-0 mb-8 border border-[#e5e5e5] dark:border-[#262626] w-fit">
         {filters.map(f => (
@@ -393,44 +382,89 @@ function KalenderSection() {
 
       {/* Events list */}
       <div className="border-t border-[#e5e5e5] dark:border-[#222222]">
-        {filtered.map((e, i) => (
-          <div key={i} className="flex items-start gap-6 py-5 border-b border-[#e5e5e5] dark:border-[#222222] hover:bg-[#fafafa] dark:hover:bg-[#141414] transition-colors px-2 group">
-            <div className="w-14 flex-shrink-0 text-center">
-              <p className="font-display font-light text-3xl leading-none text-black dark:text-white">{e.date}</p>
-              <p className="text-[10px] tracking-widest uppercase text-[#737373] dark:text-[#888888] mt-0.5">{e.day}</p>
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-wrap items-center gap-2 mb-1">
-                <span className={`text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 ${typeColor[e.type] || "bg-gray-200 text-gray-800"}`}>
-                  {e.type}
-                </span>
-                <span className="text-xs text-[#737373]">{e.time}</span>
-              </div>
-              <p className="font-medium text-black dark:text-white text-sm">{e.title}</p>
-              <p className="text-xs text-[#737373] dark:text-[#888888] mt-0.5">{e.location}</p>
-            </div>
-            <button className="hidden group-hover:flex items-center gap-1 text-xs text-[#E8001A] font-medium flex-shrink-0">
-              + Tambah
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </button>
+        {loading ? (
+          <div className="py-12 text-center text-sm text-[#737373] dark:text-[#888888]">
+            Memuat jadwal dari teater...
           </div>
-        ))}
+        ) : filtered.length === 0 ? (
+          <div className="py-12 text-center text-sm text-[#737373] dark:text-[#888888]">
+            Tidak ada jadwal untuk kategori "{filter}".
+          </div>
+        ) : (
+          filtered.map((e, i) => (
+            <div key={i} className="flex items-start gap-6 py-5 border-b border-[#e5e5e5] dark:border-[#222222] hover:bg-[#fafafa] dark:hover:bg-[#141414] transition-colors px-2 group">
+              <div className="w-14 flex-shrink-0 text-center">
+                <p className="font-display font-light text-3xl leading-none text-black dark:text-white">{e.date}</p>
+                <p className="text-[10px] tracking-widest uppercase text-[#737373] dark:text-[#888888] mt-0.5">{e.day}</p>
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <span className={`text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 ${typeColor[e.type] || 'bg-gray-700 text-white'}`}>
+                    {e.type}
+                  </span>
+                  <span className="text-xs text-[#737373]">{e.time}</span>
+                </div>
+                <p className="font-medium text-black dark:text-white text-sm">{e.title}</p>
+                <p className="text-xs text-[#737373] dark:text-[#888888] mt-0.5">{e.location || 'Teater JKT48, FX Sudirman'}</p>
+              </div>
+              <button className="hidden group-hover:flex items-center gap-1 text-xs text-[#E8001A] font-medium flex-shrink-0">
+                + Tambah
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </div>
+          ))
+        )}
       </div>
     </section>
-  )
+  );
 }
 
 // ─── Section: Statistik ──────────────────────────────────────────────────────
 
+
+interface Member {
+  name: string;
+  team: string;
+}
+
 function StatistikSection() {
-  const [selectedMember, setSelectedMember] = useState(members[0])
+  const [members, setMembers] = useState<Member[]>([]);
+  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+  const [periodeText, setPeriodeText] = useState('Memuat...');
+  
+  useEffect(() => {
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    fetch(`${apiUrl}/api/jadwal`)
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP status ${response.status}`);
+        return response.json();
+      })
+      .then(result => {
+        if (result && result.periode) { setPeriodeText(result.periode); }
+      })
+      .catch(error => {
+        console.error('Gagal nge-fetch periode:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch('http://localhost:8000/api/members')
+      .then((res) => res.json())
+      .then((result) => {
+        setMembers(result.data);
+        if (result.data && result.data.length > 0) {
+          setSelectedMember(result.data[0]);
+        }
+      })
+      .catch((err) => console.error("Gagal load member:", err));
+  }, []);
 
   return (
     <section id="statistik" className="max-w-7xl mx-auto px-6 py-16">
       <div className="mb-10">
-        <p className="text-xs tracking-[0.3em] uppercase text-[#E8001A] font-medium mb-2">Data September 2026</p>
+        <p className="text-xs tracking-[0.3em] uppercase text-[#E8001A] font-medium mb-2">Data {periodeText}</p>
         <h2 className="font-display font-light text-4xl md:text-5xl text-black dark:text-white">Statistik Penampilan</h2>
       </div>
 
@@ -445,32 +479,40 @@ function StatistikSection() {
               key={m.name}
               onClick={() => setSelectedMember(m)}
               className={`w-full text-left px-5 py-4 border-b border-[#f0f0f0] dark:border-[#1c1c1c] last:border-b-0 transition-colors ${
-                selectedMember.name === m.name ? 'bg-[#E8001A] text-white' : 'hover:bg-[#f5f5f5] dark:hover:bg-[#1a1a1a]'
+                selectedMember?.name === m.name ? 'bg-[#E8001A] text-white' : 'hover:bg-[#f5f5f5] dark:hover:bg-[#1a1a1a]'
               }`}
             >
-              <p className={`text-sm font-medium ${selectedMember.name === m.name ? 'text-white' : 'text-black dark:text-white'}`}>{m.name}</p>
-              <p className={`text-xs mt-0.5 ${selectedMember.name === m.name ? 'text-red-200' : 'text-[#737373] dark:text-[#888888]'}`}>{m.team}</p>
+              <p className={`text-sm font-medium ${selectedMember?.name === m.name ? 'text-white' : 'text-black dark:text-white'}`}>{m.name}</p>
+              <p className={`text-xs mt-0.5 ${selectedMember?.name === m.name ? 'text-red-200' : 'text-[#737373] dark:text-[#888888]'}`}>{m.team}</p>
             </button>
           ))}
         </div>
 
         {/* Oshi stats */}
         <div className="md:col-span-2 p-6">
-          <p className="text-xs font-semibold tracking-widest uppercase text-[#737373] dark:text-[#888888] mb-5">
-            {selectedMember.name} — {selectedMember.team}
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-            {[
-              { label: 'Penampilan Bulan Ini', value: selectedMember.appearances.toString() },
-              { label: 'Terakhir Tampil', value: selectedMember.lastShow },
-              { label: 'Setlist Favorit', value: selectedMember.favoriteSet },
-            ].map((s) => (
-              <div key={s.label} className="border border-[#e5e5e5] dark:border-[#222222] bg-white dark:bg-[#161616] p-4 transition-colors">
-                <p className="text-[10px] uppercase tracking-widest text-[#737373] dark:text-[#888888] mb-2">{s.label}</p>
-                <p className="font-display font-light text-xl leading-tight text-black dark:text-white">{s.value}</p>
+          {selectedMember ? (
+            <>
+              <p className="text-xs font-semibold tracking-widest uppercase text-[#737373] dark:text-[#888888] mb-5">
+                {selectedMember.name} — {selectedMember.team}
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                {[
+                  { label: 'Penampilan Bulan Ini', value: selectedMember.appearances != null ? selectedMember.appearances.toString() : '-' },
+                  { label: 'Terakhir Tampil', value: selectedMember.lastShow || '-' },
+                  { label: 'Setlist Favorit', value: selectedMember.favoriteSet || '-' },
+                ].map((s) => (
+                  <div key={s.label} className="border border-[#e5e5e5] dark:border-[#222222] bg-white dark:bg-[#161616] p-4 transition-colors">
+                    <p className="text-[10px] uppercase tracking-widest text-[#737373] dark:text-[#888888] mb-2">{s.label}</p>
+                    <p className="font-display font-light text-xl leading-tight text-black dark:text-white">{s.value}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </>
+          ) : (
+            <div className="py-12 text-center text-sm text-[#737373]">
+              Pilih member untuk melihat statistik
+            </div>
+          )}
 
           {/* Top songs */}
           <p className="text-xs font-semibold tracking-widest uppercase text-[#737373] dark:text-[#888888] mb-4">
@@ -498,7 +540,7 @@ function StatistikSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 // ─── Section: Tiket ──────────────────────────────────────────────────────────
